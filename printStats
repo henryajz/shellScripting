@@ -1,0 +1,43 @@
+#!/bin/bash
+
+#This script takes a file as input parameter. File format, lines of double values.
+#Then finds the max and min value in the file returning them with file name and
+#file columns
+#
+#call     ./findMaxProd   ./inputFile
+#output    text
+
+input=$*
+
+for str
+do
+  filecolumns=0
+  var=$1
+  maxF=0.0
+  minF=0.0
+
+  while IFS= read line
+  do
+      arr=( $line )
+      a=${arr[0]}
+      filecolumns=$(( filecolumns + 1 ))
+
+    	if [ "${a%.*}" -ge "${maxF%.*}" ]
+        then
+          maxF=$a
+      elif [ "${minF%.*}" -ne 0 ]
+        then
+          if [ "${minF%.*}" -gt "${a%.*}" ]
+            then
+              minF=$a
+          fi
+      else
+          minF=$a
+      fi
+
+  done < "$var"
+
+  echo "FILE:$var,lines:$filecolumns,max=$maxF, min=$minF"
+
+  shift
+done
