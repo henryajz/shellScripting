@@ -1,0 +1,49 @@
+#!/bin/bash
+
+#This script takes as parameters the file name and a integer n. File format is
+#String!int1:int2. It reads up to n lines and finds the max product between
+#the two integers. If n>number of lines in the file it reads all of file data.
+#
+#call     ./findMaxProd   ./inputFile    int
+#output    integer
+
+input=$*
+
+
+n=$2
+
+#Ignores everything after the ! character
+var=$( cut -d '!' -f2 $1)
+
+prod=0
+i=1
+
+#Read each line of the file as int1:int2 format
+for line in $var
+do
+
+  IFS=':'
+
+  #Separate each integer to an array
+  arr=( $line )
+  a=${arr[0]}
+  b=${arr[1]}
+
+  #temp product
+  temp=$((a * b))
+
+  if [ "$temp" -ge "$prod" ]
+    then
+        prod=$temp
+      fi
+
+  if [ "$n" -eq "$i" ]
+      then
+        break
+      fi
+
+  i=$((i+1))
+
+done
+
+echo $prod
